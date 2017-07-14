@@ -20,8 +20,21 @@ namespace MyLoginPage.Controllers
         {
             if ( !string.IsNullOrWhiteSpace(pageData.Account) && !string.IsNullOrWhiteSpace(pageData.Password))
             {
-                pageData.Message =
-                $"您使用{pageData.Account}登入成功。";
+                List<string> BanList = new List<string> { };
+                BanList.Add("skilltree");
+                BanList.Add("demo");
+                BanList.Add("twMVC");
+
+                foreach (var item in BanList)
+                {
+                    if (pageData.Account.Contains(item))
+                    {
+                        pageData.Message = "登入失敗！帳號包含非法字元！";
+                        return View(pageData);
+                    }
+                }
+
+                pageData.Message = $"您使用{pageData.Account}登入成功。";
             }
             return View(pageData);
         }
